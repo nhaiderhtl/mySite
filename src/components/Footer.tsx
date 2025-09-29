@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-info">
-            <h3>Your Name</h3>
+            <h3>Nico Haider</h3>
             <p>Full Stack Developer passionate about creating amazing web experiences.</p>
           </div>
 
@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
         <div className="footer-bottom">
           <div className="footer-divider"></div>
           <div className="footer-copyright">
-            <p>&copy; {currentYear} Your Name. All rights reserved.</p>
+            <p>&copy; {currentYear} Nico Haider. All rights reserved.</p>
             <p>Built with React & TypeScript</p>
           </div>
         </div>

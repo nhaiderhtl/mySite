@@ -26,7 +26,7 @@ const Header: React.FC = () => {
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <nav className="nav">
         <div className="nav-brand">
-          <h2>Your Name</h2>
+          <h2>Nico Haider</h2>
         </div>
 
         <button
