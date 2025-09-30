@@ -44,168 +44,174 @@ const Header: React.FC = () => {
     height: '70px'
   }
 
+  const logoStyle: React.CSSProperties = {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '1.5rem',
+    fontWeight: '900',
+    color: 'var(--gray-900)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--space-2)'
+  }
+
+  const navLinksStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--space-8)',
+    listStyle: 'none'
+  }
+
+  const navLinkStyle: React.CSSProperties = {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    fontWeight: '600',
+    color: 'var(--gray-700)',
+    transition: 'var(--transition)',
+    padding: 'var(--space-2) var(--space-4)',
+    borderRadius: 'var(--radius-lg)',
+    fontSize: '1rem' // Increased from 0.9rem
+  }
+
+  const mobileMenuStyle: React.CSSProperties = {
+    display: isMenuOpen ? 'flex' : 'none',
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    background: 'rgba(255, 255, 255, 0.98)',
+    backdropFilter: 'blur(10px)',
+    flexDirection: 'column',
+    padding: 'var(--space-6)',
+    boxShadow: 'var(--shadow-xl)',
+    borderTop: '1px solid var(--gray-200)'
+  }
+
   return (
     <header style={headerStyle}>
       <nav style={navStyle}>
         {/* Logo */}
         <button
           onClick={() => scrollToSection('hero')}
-          style={{
-            fontSize: '1.5rem',
-            fontWeight: '900',
-            background: 'linear-gradient(135deg, var(--primary-blue), var(--purple))',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            transition: 'transform 0.3s ease'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          style={logoStyle}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-blue)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--gray-900)'}
         >
-          &lt;NH/&gt;
+          <span style={{
+            background: 'linear-gradient(135deg, var(--primary-blue), var(--purple))',
+            padding: 'var(--space-2)',
+            borderRadius: 'var(--radius-lg)',
+            color: 'white'
+          }}>
+            NH
+          </span>
+          Nico Haider
         </button>
 
         {/* Desktop Navigation */}
-        <div style={{ display: 'flex', gap: 'var(--space-8)' }} className="hidden md:flex">
-          {['Über mich', 'Skills', 'Projekte', 'Kontakt'].map((item, index) => {
-            const sectionIds = ['about', 'skills', 'projects', 'contact']
-            return (
+        <ul style={{ ...navLinksStyle, display: 'none' }} className="md:flex">
+          {[
+            { name: 'Start', id: 'hero' },
+            { name: 'Über mich', id: 'about' },
+            { name: 'Skills', id: 'skills' },
+            { name: 'Projekte', id: 'projects' },
+            { name: 'Kontakt', id: 'contact' }
+          ].map((item) => (
+            <li key={item.id}>
               <button
-                key={item}
-                onClick={() => scrollToSection(sectionIds[index])}
-                style={{
-                  padding: 'var(--space-3) var(--space-4)',
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--gray-700)',
-                  fontWeight: '600',
-                  borderRadius: 'var(--radius-lg)',
-                  transition: 'var(--transition)',
-                  cursor: 'pointer',
-                  position: 'relative'
-                }}
+                onClick={() => scrollToSection(item.id)}
+                style={navLinkStyle}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = 'var(--primary-blue)'
-                  e.currentTarget.style.background = 'rgba(37, 99, 235, 0.1)'
+                  e.currentTarget.style.background = 'var(--gray-50)'
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.color = 'var(--gray-700)'
-                  e.currentTarget.style.background = 'none'
+                  e.currentTarget.style.background = 'transparent'
                 }}
               >
-                {item}
+                {item.name}
               </button>
-            )
-          })}
-        </div>
+            </li>
+          ))}
+        </ul>
 
-        {/* CTA Button */}
-        <button
-          onClick={() => scrollToSection('contact')}
-          className="btn btn-primary hidden md:inline-flex"
-        >
-          Kontakt
-        </button>
-
-        {/* Mobile menu button */}
+        {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '4px',
-            padding: 'var(--space-2)',
             background: 'none',
             border: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            padding: 'var(--space-2)'
           }}
           className="md:hidden"
         >
           <span style={{
-            width: '25px',
-            height: '3px',
+            width: '24px',
+            height: '2px',
             background: 'var(--gray-700)',
-            borderRadius: 'var(--radius-full)',
             transition: 'var(--transition)',
-            transform: isMenuOpen ? 'rotate(45deg) translateY(7px)' : 'none'
+            transform: isMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none'
           }}></span>
           <span style={{
-            width: '25px',
-            height: '3px',
+            width: '24px',
+            height: '2px',
             background: 'var(--gray-700)',
-            borderRadius: 'var(--radius-full)',
             transition: 'var(--transition)',
             opacity: isMenuOpen ? 0 : 1
           }}></span>
           <span style={{
-            width: '25px',
-            height: '3px',
+            width: '24px',
+            height: '2px',
             background: 'var(--gray-700)',
-            borderRadius: 'var(--radius-full)',
             transition: 'var(--transition)',
-            transform: isMenuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none'
+            transform: isMenuOpen ? 'rotate(-45deg) translate(7px, -6px)' : 'none'
           }}></span>
         </button>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
-            padding: 'var(--space-6)',
-            borderRadius: 'var(--radius-lg)',
-            margin: 'var(--space-2)',
-            boxShadow: 'var(--shadow-xl)',
-            border: '1px solid var(--gray-200)'
-          }} className="md:hidden">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              {['Über mich', 'Skills', 'Projekte', 'Kontakt'].map((item, index) => {
-                const sectionIds = ['about', 'skills', 'projects', 'contact']
-                return (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(sectionIds[index])}
-                    style={{
-                      padding: 'var(--space-4)',
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--gray-700)',
-                      fontWeight: '600',
-                      borderRadius: 'var(--radius-lg)',
-                      transition: 'var(--transition)',
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      width: '100%'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(37, 99, 235, 0.1)'
-                      e.currentTarget.style.color = 'var(--primary-blue)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'none'
-                      e.currentTarget.style.color = 'var(--gray-700)'
-                    }}
-                  >
-                    {item}
-                  </button>
-                )
-              })}
-              <button
-                onClick={() => scrollToSection('contact')}
-                className="btn btn-primary"
-                style={{ marginTop: 'var(--space-4)', width: '100%' }}
-              >
-                Kontakt aufnehmen
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Mobile Menu */}
+        <div style={mobileMenuStyle}>
+          {[
+            { name: 'Start', id: 'hero' },
+            { name: 'Über mich', id: 'about' },
+            { name: 'Skills', id: 'skills' },
+            { name: 'Projekte', id: 'projects' },
+            { name: 'Kontakt', id: 'contact' }
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 'var(--space-4)',
+                fontSize: '1.1rem',
+                fontWeight: '600',
+                color: 'var(--gray-700)',
+                textAlign: 'left',
+                borderRadius: 'var(--radius-lg)',
+                transition: 'var(--transition)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--gray-50)'
+                e.currentTarget.style.color = 'var(--primary-blue)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.color = 'var(--gray-700)'
+              }}
+            >
+              {item.name}
+            </button>
+          ))}
+        </div>
       </nav>
     </header>
   )
