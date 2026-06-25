@@ -1,49 +1,57 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { ArrowUpRight } from 'lucide-react';
+import { projects, type Project } from '../data/projects';
 
-interface Project {
-  name: string;
-  description: string;
-  link: string;
-}
+const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
+  const ref = useRef<HTMLAnchorElement>(null);
 
-const projects: Project[] = [
-  {
-    name: 'Avalonia Rpn Calculator',
-    description: 'A little C#/Avalonia Project we did in school. Basic Calc Functions + List Calculations',
-    link: 'https://github.com/nhaiderhtl/avaloniaRpnCalc',
-  },
-  {
-    name: 'Html Forge',
-    description: 'Open Source kotlin (started as java) library to generate html sites with style in kotlin with classes. Small group project a friend of mine started and I contributed to.',
-    link: 'https://github.com/htmlforge-team/HtmlForge',
-  },
-  {
-    name: 'Incremental',
-    description: 'A little incremental game in TS/Vue.js, WOP',
-    link: 'https://github.com/nhaiderhtl/web-incremental',
-  },
-];
+  // lightweight pointer-follow tilt (no extra deps)
+  const onMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform = `perspective(800px) rotateY(${px * 8}deg) rotateX(${-py * 8}deg) translateY(-4px)`;
+  };
+  const reset = () => {
+    if (ref.current) ref.current.style.transform = '';
+  };
 
-const Projects: React.FC = () => {
   return (
-    <section id="projects" className="container mx-auto py-16">
-      <h2 className="text-4xl font-bold text-center mb-6">Stuff I've Built</h2>
-      <p className="text-center text-lg mb-12 max-w-2xl mx-auto">
-        These are some projects I've worked on in my free time. Each one taught me something new!
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project, index) => (
-          <div key={index} className="card">
-            <h3 className="text-2xl font-bold mb-2">{project.name}</h3>
-            <p className="mb-4">{project.description}</p>
-            <a href={project.link} className="btn">
-              Check it out
-            </a>
-          </div>
+    <a
+      ref={ref}
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="project"
+      style={{ '--accent': project.accent ?? '#BB86FC' } as React.CSSProperties}
+      onMouseMove={onMove}
+      onMouseLeave={reset}
+    >
+      <div className="project__head">
+        <h3 className="project__name">{project.name}</h3>
+        <ArrowUpRight className="project__arrow" size={22} />
+      </div>
+      <p className="project__desc">{project.description}</p>
+      <div className="project__tags">
+        {project.tags.map((t) => (
+          <span key={t} className="project__tag">{t}</span>
         ))}
       </div>
-    </section>
+    </a>
   );
 };
+
+const Projects: React.FC = () => (
+  <section id="projects" className="section">
+    <h2 className="section__title">Stuff I've <span className="grad">built</span></h2>
+    <div className="projects">
+      {projects.map((p) => (
+        <ProjectCard key={p.name} project={p} />
+      ))}
+    </div>
+  </section>
+);
 
 export default Projects;
